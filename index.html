@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayomide — Storefronts built to convert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f7f4ec; --cream-2:#efece1;
+    --ink:#16261c; --ink-soft:#4d5b51;
+    --forest:#102a1e; --forest-2:#173a29;
+    --green:#2e8f57; --green-dark:#1f6e42;
+    --line:#e3ded0;
+    --radius:14px;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.55;}
+  img{max-width:100%; display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--green-dark); display:flex; align-items:center; gap:8px; margin-bottom:14px;}
+  .eyebrow::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--green);}
+  h1,h2,h3{font-family:var(--serif); font-weight:600; line-height:1.08; letter-spacing:-0.01em;}
+  h2{font-size:clamp(28px,4vw,40px); margin-bottom:14px;}
+  .lede{color:var(--ink-soft); max-width:60ch; font-size:16px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:14.5px; cursor:pointer; border:1px solid transparent; text-decoration:none;}
+  .btn-primary{background:var(--green); color:#fff;}
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-ghost{border-color:var(--ink); color:var(--ink); background:transparent;}
+  .btn-ghost:hover{background:var(--ink); color:var(--cream);}
+  section{padding:88px 0;}
+
+  /* Header */
+  header{position:sticky; top:0; background:rgba(247,244,236,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); z-index:50;}
+  header .wrap{display:flex; align-items:center; justify-content:space-between; padding:16px 24px;}
+  .logo{display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px;}
+  .logo .mark{width:30px; height:30px; border-radius:8px; background:var(--green); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:600;}
+  nav ul{list-style:none; display:flex; gap:28px; font-size:14.5px; font-weight:500;}
+  nav a:hover{color:var(--green-dark);}
+  .nav-inner{display:flex; align-items:center; gap:32px;}
+  @media (max-width:760px){ nav ul{display:none;} }
+
+  /* Hero */
+  .hero{padding:64px 0 40px;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;}
+  .hero h1{font-size:clamp(38px,5.5vw,58px);}
+  .hero h1 .accent{color:var(--green-dark);}
+  .hero .lede{margin:18px 0 28px; font-size:17px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:34px;}
+  .stat-row{display:flex; gap:36px;}
+  .stat b{font-family:var(--serif); font-size:24px; display:block;}
+  .stat span{font-size:13px; color:var(--ink-soft);}
+  .hero-art{background:linear-gradient(160deg,#d6ecdd,#c7e4d1); border-radius:24px; padding:26px; position:relative; min-height:420px; display:flex; align-items:flex-end;}
+  .avatar-block{width:100%; background:var(--forest); border-radius:16px; color:#fff; padding:22px; font-family:var(--mono); font-size:12.5px;}
+  .avatar-circle{width:96px; height:96px; border-radius:50%; background:var(--forest); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:34px; margin:0 auto 14px; border:4px solid #fff;}
+  .order-row{display:flex; justify-content:space-between; padding:6px 0; border-top:1px solid rgba(255,255,255,.12);}
+  .order-row:first-child{border-top:none;}
+  .order-row span:last-child{color:#8fe0ab;}
+  .pill{position:absolute; background:#fff; border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:600; box-shadow:0 6px 18px rgba(0,0,0,.08); display:flex; align-items:center; gap:6px;}
+  .pill::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--green);}
+  .pill.top-left{top:-14px; left:10px;} .pill.top-right{top:20px; right:-10px;}
+
+  /* Marquee */
+  .marquee-wrap{background:var(--forest); color:#cfe9d8; overflow:hidden; padding:20px 0;}
+  .marquee-track{display:flex; gap:48px; font-family:var(--mono); font-size:13px; white-space:nowrap; animation:scroll 28s linear infinite;}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  @media (prefers-reduced-motion:reduce){.marquee-track{animation:none; overflow-x:auto;}}
+
+  /* Studio */
+  .studio{background:var(--cream-2);}
+  .studio-grid{display:grid; grid-template-columns:1fr .85fr; gap:56px; align-items:center;}
+  .studio p{color:var(--ink-soft); margin-bottom:14px; max-width:56ch;}
+  .metrics{background:var(--forest); color:#fff; border-radius:16px; padding:22px 26px; margin-top:10px;}
+  .metrics .row{display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.1); font-size:14px;}
+  .metrics .row:first-child{border-top:none;}
+  .metrics b{font-family:var(--serif); color:#8fe0ab; font-size:18px;}
+
+  /* Services */
+  .services-head{text-align:center; margin-bottom:44px;}
+  .services-head .eyebrow{justify-content:center;}
+  .services-head p{max-width:50ch; margin:0 auto; color:var(--ink-soft);}
+  .service-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  @media (max-width:900px){.service-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.service-grid{grid-template-columns:1fr;}}
+  .service-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px; transition:transform .15s, box-shadow .15s;}
+  .service-card:hover{transform:translateY(-3px); box-shadow:0 12px 24px rgba(16,42,30,.08);}
+  .service-icon{width:38px; height:38px; border-radius:9px; background:#e4f3e9; color:var(--green-dark); display:flex; align-items:center; justify-content:center; font-size:17px; margin-bottom:14px;}
+  .service-card h3{font-size:16px; font-family:var(--sans); font-weight:700; margin-bottom:6px;}
+  .service-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:12px;}
+  .service-card .link{font-size:13px; font-weight:600; color:var(--green-dark);}
+
+  /* Pricing */
+  .pricing{background:var(--cream-2);}
+  .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:860px){.price-grid{grid-template-columns:1fr;}}
+  .price-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:30px; display:flex; flex-direction:column;}
+  .price-card.featured{background:var(--forest); color:#fff; border:none; position:relative;}
+  .price-card.featured .lede2{color:#b9d6c4;}
+  .price-tag{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--green-dark); margin-bottom:10px;}
+  .price-card.featured .price-tag{color:#8fe0ab;}
+  .price-amount{font-family:var(--serif); font-size:38px; margin-bottom:4px;}
+  .price-amount sup{font-size:15px; font-weight:500; font-family:var(--sans);}
+  .price-sub{font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+  .price-card.featured .price-sub{color:#b9d6c4;}
+  .price-list{list-style:none; margin-bottom:24px; flex:1;}
+  .price-list li{font-size:14px; padding:8px 0; border-top:1px solid var(--line); display:flex; gap:8px;}
+  .price-list li:first-child{border-top:none;}
+  .price-card.featured .price-list li{border-color:rgba(255,255,255,.15);}
+  .price-list li::before{content:'✓'; color:var(--green-dark); font-weight:700;}
+  .price-card.featured .price-list li::before{color:#8fe0ab;}
+  .badge-popular{position:absolute; top:-12px; right:24px; background:var(--green); color:#fff; font-size:11px; font-weight:700; padding:5px 12px; border-radius:999px;}
+
+  /* Work */
+  .work{background:var(--forest); color:#fff;}
+  .work .eyebrow{color:#8fe0ab;} .work .eyebrow::before{background:#8fe0ab;}
+  .work .services-head p{color:#b9d6c4;}
+  .work-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:860px){.work-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.work-grid{grid-template-columns:1fr;}}
+  .work-card{background:var(--forest-2); border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08);}
+  .work-thumb{height:140px; background:linear-gradient(135deg,#1e4a33,#2b6b46); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:15px; color:#dff3e6; padding:16px; text-align:center;}
+  .work-body{padding:18px;}
+  .work-body h3{font-family:var(--sans); font-size:15px; font-weight:700; margin-bottom:6px;}
+  .work-body p{font-size:13px; color:#b9d6c4; margin-bottom:10px;}
+  .work-body .link{font-size:13px; font-weight:600; color:#8fe0ab;}
+  .work-card.cta{display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; border:1px dashed rgba(255,255,255,.25); background:transparent;}
+  .work-card.cta h3{font-family:var(--serif); font-weight:500; font-size:18px; margin-bottom:8px;}
+  .work-card.cta p{font-size:13px; color:#b9d6c4; margin-bottom:14px;}
+
+  /* Reviews */
+  .review-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:860px){.review-grid{grid-template-columns:1fr;}}
+  .review-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px;}
+  .stars{color:#e8a93a; font-size:14px; letter-spacing:2px; margin-bottom:12px;}
+  .review-card p{font-size:14.5px; color:var(--ink); margin-bottom:18px;}
+  .reviewer{display:flex; align-items:center; gap:10px;}
+  .reviewer .initials{width:38px; height:38px; border-radius:50%; background:var(--forest); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:14px;}
+  .reviewer .name{font-size:13.5px; font-weight:700;}
+  .reviewer .role{font-size:12px; color:var(--ink-soft);}
+
+  /* FAQ */
+  .faq{background:var(--cream-2);}
+  .faq-list{max-width:760px; margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--line); padding:6px 0;}
+  .faq-item summary{cursor:pointer; list-style:none; font-weight:600; font-size:15.5px; padding:16px 0; display:flex; justify-content:space-between; align-items:center; gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+'; font-family:var(--serif); font-size:22px; color:var(--green-dark); flex-shrink:0;}
+  .faq-item[open] summary::after{content:'–';}
+  .faq-item p{font-size:14.5px; color:var(--ink-soft); padding-bottom:18px; max-width:64ch;}
+
+  /* Contact */
+  .contact{background:var(--forest); color:#fff; border-radius:24px; margin:0 24px; padding:56px; max-width:1072px; margin-inline:auto;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px;}
+  @media (max-width:800px){.contact-grid{grid-template-columns:1fr;}}
+  .contact .eyebrow{color:#8fe0ab;} .contact .eyebrow::before{background:#8fe0ab;}
+  .contact p.lede{color:#b9d6c4; margin:14px 0 22px;}
+  .contact-detail{margin-bottom:14px;}
+  .contact-detail .label{font-family:var(--mono); font-size:11px; color:#8fe0ab; letter-spacing:.06em;}
+  .contact-detail .value{font-size:14.5px; font-weight:600;}
+  form{display:flex; flex-direction:column; gap:12px;}
+  .form-row{display:flex; gap:12px;}
+  input,select,textarea{width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); border-radius:9px; padding:12px 14px; color:#fff; font-family:var(--sans); font-size:14px;}
+  input::placeholder,textarea::placeholder{color:#9db8a9;}
+  textarea{min-height:90px; resize:vertical;}
+  select option{color:#000;}
+  form .btn-primary{align-self:flex-start; border:none;}
+
+  footer{padding:36px 0; text-align:center; font-size:13px; color:var(--ink-soft);}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center;}
+  @media (max-width:600px){footer .wrap{flex-direction:column; gap:10px;}}
+
+  @media (max-width:900px){
+    .hero-grid, .studio-grid{grid-template-columns:1fr;}
+    .contact{padding:36px 22px; margin:0 12px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="mark">A</span> Ayomide</div>
+    <div class="nav-inner">
+      <nav><ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul></nav>
+      <a href="#contact" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Ecommerce studio</div>
+      <h1>Storefronts built to <span class="accent">convert.</span></h1>
+      <p class="lede">Ayomide designs and builds Shopify, WooCommerce, and Webflow stores for brands that are done leaving revenue on the table. Fast, clean builds, engineered for checkout, not just for show.</p>
+      <div class="cta-row">
+        <a href="#work" class="btn btn-primary">View Our Work</a>
+        <a href="#contact" class="btn btn-ghost">Start a Project</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>60+</b><span>Stores launched</span></div>
+        <div class="stat"><b>4</b><span>Platforms</span></div>
+        <div class="stat"><b>5.0</b><span>Avg. rating · 40 reviews</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <span class="pill top-left">Available for Work</span>
+      <span class="pill top-right">Shopify Partner</span>
+      <div class="avatar-block">
+        <div class="avatar-circle">AI</div>
+        <div class="order-row"><span>Store Design</span><span>Included</span></div>
+        <div class="order-row"><span>Conversion Setup</span><span>Included</span></div>
+        <div class="order-row"><span>Launch Support</span><span>Included</span></div>
+        <div class="order-row"><span>Turnaround</span><span>2–4 wks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Shopify</span><span>WooCommerce</span><span>Webflow</span><span>Wix</span><span>Klaviyo</span><span>Google Merchant</span>
+    <span>Shopify</span><span>WooCommerce</span><span>Webflow</span><span>Wix</span><span>Klaviyo</span><span>Google Merchant</span>
+  </div>
+</div>
+
+<section class="studio">
+  <div class="wrap studio-grid">
+    <div>
+      <div class="eyebrow">The studio</div>
+      <h2>One specialist, every store detail handled.</h2>
+      <p>Ayomide is a small, focused ecommerce studio. No account managers, no hand-offs. The person who scopes your project is the one who builds it, from first wireframe to the day it goes live.</p>
+      <p>Whether you're launching a new store, migrating platforms, or fixing a checkout that's quietly losing sales, the goal is the same: a store that looks sharp and sells harder.</p>
+      <a href="#contact" class="btn btn-primary">Work With Us</a>
+    </div>
+    <div class="metrics">
+      <div class="eyebrow" style="color:#8fe0ab">Studio metrics</div>
+      <div class="row"><span>Stores launched</span><b>60+</b></div>
+      <div class="row"><span>Avg. conversion lift</span><b>38%</b></div>
+      <div class="row"><span>Platforms supported</span><b>4</b></div>
+      <div class="row"><span>Repeat clients</span><b>72%</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">What we do</div>
+      <h2>8 services. One goal: sales.</h2>
+      <p>Every service below exists to move a visitor closer to checkout.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card"><div class="service-icon">🛍</div><h3>Shopify Store Build</h3><p>Custom themes designed around your product, not a template.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">🧩</div><h3>WooCommerce Setup</h3><p>Full WordPress + WooCommerce builds for brands that want ownership.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">🔁</div><h3>Store Migration</h3><p>Move platforms without losing SEO rankings or order history.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">📈</div><h3>Conversion Optimization</h3><p>Checkout audits and A/B tests that turn browsers into buyers.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">🖼</div><h3>Product Page Design</h3><p>Layouts built around imagery, reviews, and urgency that convert.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">✉️</div><h3>Email & SMS Flows</h3><p>Abandoned cart, welcome, and post-purchase flows via Klaviyo.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">🔍</div><h3>Ecommerce SEO</h3><p>Technical and on-page SEO tuned for product and category pages.</p><span class="link">Click to explore →</span></div>
+      <div class="service-card"><div class="service-icon">🛠</div><h3>Ongoing Store Care</h3><p>Monthly maintenance, updates, and performance monitoring.</p><span class="link">Click to explore →</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Investment</div>
+      <h2>Simple pricing, built around scope.</h2>
+      <p>Every project starts with a scoping call — these are starting points, not final quotes.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-tag">Starter</div>
+        <div class="price-amount">$200<sup>+</sup></div>
+        <div class="price-sub">Fixes, audits & single-page builds</div>
+        <ul class="price-list">
+          <li>Conversion / checkout audit</li>
+          <li>Single product or landing page</li>
+          <li>Minor fixes & speed cleanup</li>
+          <li>3–5 day turnaround</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Get started</a>
+      </div>
+      <div class="price-card featured">
+        <span class="badge-popular">Most booked</span>
+        <div class="price-tag">Full Store Build</div>
+        <div class="price-amount">$900<sup>+</sup></div>
+        <div class="price-sub lede2">A complete store, launch-ready</div>
+        <ul class="price-list">
+          <li>Full Shopify / WooCommerce build</li>
+          <li>Conversion-focused product pages</li>
+          <li>Email & SMS flow setup</li>
+          <li>2–4 week turnaround + launch support</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">Get started</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tag">Ongoing Care</div>
+        <div class="price-amount">$150<sup>/mo</sup></div>
+        <div class="price-sub">For stores that are already live</div>
+        <ul class="price-list">
+          <li>Monthly maintenance & updates</li>
+          <li>Performance monitoring</li>
+          <li>Priority support</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Get started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Recent work</div>
+      <h2 style="color:#fff">A few stores we've shipped.</h2>
+      <p>Case studies available on request.</p>
+    </div>
+    <div class="work-grid">
+      <div class="work-card"><div class="work-thumb">Awesome Clothing Co.</div><div class="work-body"><h3>Awesome Clothing Co.</h3><p>Full storefront build with featured products and new arrivals layout.</p><span class="link">View case study →</span></div></div>
+      <div class="work-card"><div class="work-thumb">Buyer</div><div class="work-body"><h3>Buyer</h3><p>Editorial-style fashion store with a lookbook-driven layout.</p><span class="link">View case study →</span></div></div>
+      <div class="work-card"><div class="work-thumb">The Men's Edit</div><div class="work-body"><h3>The Men's Edit</h3><p>Modern menswear store with seasonal collection banners.</p><span class="link">View case study →</span></div></div>
+      <div class="work-card"><div class="work-thumb">Shopio</div><div class="work-body"><h3>Shopio</h3><p>Multi-category lifestyle marketplace with trending products.</p><span class="link">View case study →</span></div></div>
+      <div class="work-card"><div class="work-thumb">Mixtas</div><div class="work-body"><h3>Mixtas</h3><p>Streetwear storefront with tabbed new-arrivals filtering.</p><span class="link">View case study →</span></div></div>
+      <div class="work-card cta"><div><h3>Your store, here next.</h3><p>Tell us about your project and let's build something that sells.</p><a href="#contact" class="btn btn-primary">Start a Project</a></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Client reviews</div>
+      <h2>What clients are saying.</h2>
+      <p>A few words from brands we've built and grown with.</p>
+    </div>
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Ayomide rebuilt our checkout flow and our abandoned cart rate dropped almost overnight. Communicative the whole way through."</p>
+        <div class="reviewer"><div class="initials">TA</div><div><div class="name">Tolu A.</div><div class="role">Founder, Awesome Clothing Co.</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"We moved from Wix to Shopify and I was dreading it. The migration was smooth, no lost rankings, and the new site looks so much sharper."</p>
+        <div class="reviewer"><div class="initials">RM</div><div><div class="name">Rasheed M.</div><div class="role">Owner, The Men's Edit</div></div></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Fast turnaround, clear pricing, and the product pages actually convert. Already booked them again for our next collection launch."</p>
+        <div class="reviewer"><div class="initials">CB</div><div><div class="name">Chiamaka B.</div><div class="role">Marketing Lead, Mixtas</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="services-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Frequently asked questions.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>How much does a project cost?</summary>
+        <p>Pricing starts from $200 for audits, fixes, and single-page work. Full store builds typically start around $900, and ongoing care plans start from $150/month. Every quote depends on scope, so the exact number comes after a short call.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How long does a typical build take?</summary>
+        <p>Small fixes and single pages usually take 3–5 days. A full store build takes 2–4 weeks depending on the number of products, integrations, and how quickly content is provided.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which platforms do you work with?</summary>
+        <p>Shopify, WooCommerce, Webflow, and Wix. If you're not sure which platform fits your business, that's part of the first conversation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you migrate my existing store without losing my SEO?</summary>
+        <p>Yes — migrations are planned around preserving your URL structure, redirects, and order history so your search rankings carry over.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you offer support after launch?</summary>
+        <p>Every build includes launch support, and ongoing maintenance is available as a monthly plan if you want updates and monitoring handled for you.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do we get started?</summary>
+        <p>Fill out the form below with a bit about your project and budget, and you'll hear back within one business day to schedule a scoping call.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact">
+    <div class="contact-grid">
+      <div>
+        <div class="eyebrow">Get in touch</div>
+        <h2 style="color:#fff">Let's build something that sells.</h2>
+        <p class="lede">Ready to launch, redesign, or migrate your store? Tell us a bit about the project and we'll get back within one business day.</p>
+        <div class="contact-detail"><div class="label">Email</div><div class="value">ayomide000dayo111@gmail.com</div></div>
+        <div class="contact-detail"><div class="label">WhatsApp</div><div class="value">Chat on WhatsApp</div></div>
+        <div class="contact-detail"><div class="label">Fiverr</div><div class="value">View on Fiverr</div></div>
+      </div>
+      <form>
+        <div class="form-row">
+          <input type="text" placeholder="Your name">
+          <input type="email" placeholder="Email address">
+        </div>
+        <select><option>Which service do you need?</option><option>Shopify Store Build</option><option>WooCommerce Setup</option><option>Store Migration</option><option>Conversion Optimization</option><option>Ongoing Store Care</option></select>
+        <select><option>Project budget</option><option>$200 – $500</option><option>$500 – $900</option><option>$900 – $2,000</option><option>$2,000+</option></select>
+        <textarea placeholder="Tell us about your store or idea..."></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo"><span class="mark">A</span> Ayomide</div>
+    <div>© 2026 Ayomide Studio. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
